@@ -1,0 +1,39 @@
+server:
+  port: 9000  
+    
+#这一段可以上传githook作为 热加载配置    
+zuul:
+#自定义路由
+  routes:
+#规则名字(随意写)
+    myTestSocial:
+    #把 serviceId 映射成想要的 path 
+      path: /myTestSocial/**
+      serviceId: test-social  
+      #敏感头，这样就能在zuul中传递cookie
+      sensitiveHeaders:     
+#简洁写法：把 serviceId 映射成想要的 path
+#    test-social: /myTestSocial/**
+#禁止某些路由，因为某些内部接口不需要暴露给外界    
+  ignored-patterns:
+    - /test-social/xxx
+    - /myTestSocial/xxx
+    #或者
+    #- /**/xxx
+
+management:
+  endpoints:
+    web:
+      exposure:
+#暴露路由
+        include: routes
+
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: user
+    password: password
+   
+env: 
+  3dev-mall-cloud-api-gateway-dev
